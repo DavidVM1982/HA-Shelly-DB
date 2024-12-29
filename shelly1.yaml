@@ -3,28 +3,28 @@
 #-----------------------------------------------------------------------------------------------------------------------
 # First place al entity's in to labels
 # Input (labelname: Input)
-#   - Total input on
-#   - Total input off
+#   - total input on
+#   - total input off
 # Output (labelname: Ouput)
-#   - Total output aan
-#   - Total output uit
+#   - total output aan
+#   - total output uit
 # Cloud connection (labelname: Cloud)
-#   - Total cloud connection OK
-#   - Total cloud connection NOK
+#   - total cloud connection OK
+#   - total cloud connection NOK
 # Wifi strength (labelname: rssi)
 #   - average rssi
 # Firmeware available  (labelname: Firmeware)
-#   - Total Update OK
-#   - Total Update NOK
+#   - total Update OK
+#   - total Update NOK
 #
 #-----------------------------------------------------------------------------------------------------------------------
 - sensor:
-#---------- Input ------------------------------------------------------------------------------------------------------
+#---------- input ------------------------------------------------------------------------------------------------------
   ######################################################################################################################
-  # Totaal input on: Shelly 1
+  # total input on
   # 27/12/2024 DVM
   ######################################################################################################################
-  - name: "Shelly 1 - Total input aan"
+  - name: "Shelly 1 - total input on"
     unique_id: fdcd8a81-95a4-42c0-b64c-4d5dedecf756
     unit_of_measurement: ""
     icon: mdi:toggle-switch
@@ -32,12 +32,12 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Input' -%}
       {%- set state = 'on' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count }}
   ######################################################################################################################
-  # Totaal input off: Shelly 1
+  # total input off
   # 27/12/2024 DVM
   ######################################################################################################################
-  - name: "Shelly 1 - total input uit"
+  - name: "Shelly 1 - total input off"
     unique_id: b70064e3-6697-4ba3-bc5c-5b69fdc9d052
     unit_of_measurement: ""
     icon: mdi:toggle-switch-off-outline
@@ -45,11 +45,12 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Input' -%}
       {%- set state = 'off' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
 
-#---------- Output -----------------------------------------------------------------------------------------------------
+#---------- output -----------------------------------------------------------------------------------------------------
   ######################################################################################################################
-  # Totaal output on: Shelly 1
+  # total output on
   # 27/12/2024 DVM
   ######################################################################################################################
   - name: "Shelly 1 - total output on"
@@ -60,9 +61,10 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Output' -%}
       {%- set state = 'on' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
   ######################################################################################################################
-  # Totaal output off: Shelly 1
+  # total output off
   # 27/12/2024 DVM
   ######################################################################################################################
   - name: "Shelly 1 - total output off"
@@ -73,14 +75,15 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Output' -%}
       {%- set state = 'off' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
 
 #---------- cloud connection -------------------------------------------------------------------------------------------
   ######################################################################################################################
-  # Totaal cloud connection OK
+  # total cloud connection OK
   # 27/12/2024 DVM
   ######################################################################################################################
-  - name: "Shelly 1 - Total cloud OK"
+  - name: "Shelly 1 - total cloud OK"
     unique_id: 254ea737-1b5b-4029-a6ae-690c7116fbde
     unit_of_measurement: ""
     icon: mdi:cloud-check-variant
@@ -88,13 +91,13 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Cloud' -%}
       {%- set state = 'on' -%}
-      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
-      {{Totaal}}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
   ######################################################################################################################
-  # Totaal cloud connection NOK
+  # total cloud connection NOK
   # 27/12/2024 DVM
   ######################################################################################################################
-  - name: "Shelly 1 - Total cloud NOK"
+  - name: "Shelly 1 - total cloud NOK"
     unique_id: e719b6aa-cf2b-4c4b-9fbd-1a7299e60c3a
     unit_of_measurement: ""
     icon: mdi:cloud-off
@@ -102,10 +105,10 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Cloud' -%}
       {%- set state = 'off' -%}
-      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
-      {{Totaal}}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
   
-  #---------- Wifi strength --------------------------------------------------------------------------------------------
+#---------- Wifi strength ----------------------------------------------------------------------------------------------
   ######################################################################################################################
   # average rssi
   # 27/12/2024 DVM
@@ -117,21 +120,20 @@
     state: >
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'rssi' -%}
-      {%- set totaal = namespace(value=0) -%}
+      {%- set total = namespace(value=0) -%}
       {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
       {%- set sensors_count = label_entities(label) | select('is_device_attr', 'model', device) | list | count -%}
       {%- for sensor in sensors -%}
-        {%- set totaal.value = totaal.value + (states(sensor) | float(0) | round(2)) -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
       {%- endfor -%}
-      {{(totaal.value / sensors_count) | round(2)}}
-
+      {{ (total.value / sensors_count) | round(0) }}
 
 #---------- Firmeware available ----------------------------------------------------------------------------------------
   ######################################################################################################################
-  # Total Update OK
+  # total update OK
   # 27/12/2024 DVM
   ######################################################################################################################
-  - name: "Shelly 1 - Total update OK"
+  - name: "Shelly 1 - total update OK"
     unique_id: 9222c29d-2642-4f16-92c8-76bb39cf9145
     unit_of_measurement: ""
     icon: mdi:update
@@ -139,13 +141,13 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Firmware' -%}
       {%- set state = 'off' -%}
-      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
-      {{Totaal}}
+      {%- set total= label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
   ######################################################################################################################
-  # Total Update NOK
+  # total update NOK
   # 27/12/2024 DVM
   ######################################################################################################################
-  - name: "Shelly 1 -Total update NOK"
+  - name: "Shelly 1 -total update NOK"
     unique_id: 5b981bf2-19d0-4f32-81cc-8a7c1a56f645
     unit_of_measurement: ""
     icon: mdi:update
@@ -153,5 +155,5 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Firmware' -%}
       {%- set state = 'on' -%}
-      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
-      {{Totaal}}
+      {%- set total= label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
