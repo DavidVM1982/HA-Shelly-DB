@@ -1,0 +1,157 @@
+#-----------------------------------------------------------------------------------------------------------------------
+#   Shelly 1
+#-----------------------------------------------------------------------------------------------------------------------
+# First place al entity's in to labels
+# Input (labelname: Input)
+#   - Total input on
+#   - Total input off
+# Output (labelname: Ouput)
+#   - Total output aan
+#   - Total output uit
+# Cloud connection (labelname: Cloud)
+#   - Total cloud connection OK
+#   - Total cloud connection NOK
+# Wifi strength (labelname: rssi)
+#   - average rssi
+# Firmeware available  (labelname: Firmeware)
+#   - Total Update OK
+#   - Total Update NOK
+#
+#-----------------------------------------------------------------------------------------------------------------------
+- sensor:
+#---------- Input ------------------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # Totaal input on: Shelly 1
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - Total input aan"
+    unique_id: fdcd8a81-95a4-42c0-b64c-4d5dedecf756
+    unit_of_measurement: ""
+    icon: mdi:toggle-switch
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Input' -%}
+      {%- set state = 'on' -%}
+      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+  ######################################################################################################################
+  # Totaal input off: Shelly 1
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - total input uit"
+    unique_id: b70064e3-6697-4ba3-bc5c-5b69fdc9d052
+    unit_of_measurement: ""
+    icon: mdi:toggle-switch-off-outline
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Input' -%}
+      {%- set state = 'off' -%}
+      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+
+#---------- Output -----------------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # Totaal output on: Shelly 1
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - total output on"
+    unique_id: 3626e88c-7e7c-461c-9a7c-3991751055e6
+    unit_of_measurement: ""
+    icon: mdi:power-plug-outline
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Output' -%}
+      {%- set state = 'on' -%}
+      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+  ######################################################################################################################
+  # Totaal output off: Shelly 1
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - total output off"
+    unique_id: 346b9320-8999-46cb-994d-a3324bc7cbea
+    unit_of_measurement: ""
+    icon: mdi:power-plug-off-outline
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Output' -%}
+      {%- set state = 'off' -%}
+      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+
+#---------- cloud connection -------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # Totaal cloud connection OK
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - Total cloud OK"
+    unique_id: 254ea737-1b5b-4029-a6ae-690c7116fbde
+    unit_of_measurement: ""
+    icon: mdi:cloud-check-variant
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Cloud' -%}
+      {%- set state = 'on' -%}
+      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{Totaal}}
+  ######################################################################################################################
+  # Totaal cloud connection NOK
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - Total cloud NOK"
+    unique_id: e719b6aa-cf2b-4c4b-9fbd-1a7299e60c3a
+    unit_of_measurement: ""
+    icon: mdi:cloud-off
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Cloud' -%}
+      {%- set state = 'off' -%}
+      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{Totaal}}
+  
+  #---------- Wifi strength --------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # average rssi
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - Average rssi"
+    unique_id: c69c8c8d-10dc-4a39-8204-0225d806f364
+    unit_of_measurement: ""
+    icon: mdi:wifi
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'rssi' -%}
+      {%- set totaal = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- set sensors_count = label_entities(label) | select('is_device_attr', 'model', device) | list | count -%}
+      {%- for sensor in sensors -%}
+        {%- set totaal.value = totaal.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{(totaal.value / sensors_count) | round(2)}}
+
+
+#---------- Firmeware available ----------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # Total Update OK
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 - Total update OK"
+    unique_id: 9222c29d-2642-4f16-92c8-76bb39cf9145
+    unit_of_measurement: ""
+    icon: mdi:update
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Firmware' -%}
+      {%- set state = 'off' -%}
+      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{Totaal}}
+  ######################################################################################################################
+  # Total Update NOK
+  # 27/12/2024 DVM
+  ######################################################################################################################
+  - name: "Shelly 1 -Total update NOK"
+    unique_id: 5b981bf2-19d0-4f32-81cc-8a7c1a56f645
+    unit_of_measurement: ""
+    icon: mdi:update
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Firmware' -%}
+      {%- set state = 'on' -%}
+      {%- set Totaal = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{Totaal}}
