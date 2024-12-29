@@ -32,7 +32,8 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Input' -%}
       {%- set state = 'on' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count }}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{ total | round(0) }}
   ######################################################################################################################
   # total input off
   # 27/12/2024 DVM
