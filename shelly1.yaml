@@ -33,8 +33,8 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Shelly - input' -%}
       {%- set state = 'on' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
-
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count -%}
+      {{total | round (0) }}
   ######################################################################################################################
   # total input off
   ######################################################################################################################
@@ -46,8 +46,8 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Shelly - input' -%}
       {%- set state = 'off' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count }}
-
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
 #---------- output status ----------------------------------------------------------------------------------------------
   ######################################################################################################################
   # total output off
@@ -60,7 +60,8 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Shelly - output' -%}
       {%- set state = 'on' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count -%}
+      {{total | round (0) }}
   ######################################################################################################################
   # total output on
   ######################################################################################################################
@@ -72,8 +73,8 @@
       {%- set device = 'Shelly 1' -%}
       {%- set label = 'Shelly - output' -%}
       {%- set state = 'off' -%}
-      {{ label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count }}
-
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count -%}
+      {{total | round (0) }}
 #---------- status connection ------------------------------------------------------------------------------------
   ######################################################################################################################
   # total cloud OK
@@ -87,7 +88,7 @@
       {%- set label = 'Shelly - cloud' -%}
       {%- set state = 'on' -%}
       {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
-      {{total}}
+      {{total | round (0) }}
   ######################################################################################################################
   # total cloud NOK
   ######################################################################################################################
@@ -100,7 +101,7 @@
       {%- set label = 'Shelly - cloud' -%}
       {%- set state = 'off' -%}
       {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
-      {{total}}
+      {{total | round (0) }}
   ######################################################################################################################
   # average Rssi
   ######################################################################################################################
