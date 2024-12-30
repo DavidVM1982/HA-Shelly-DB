@@ -1,0 +1,149 @@
+#-----------------------------------------------------------------------------------------------------------------------
+#     Shelly 1
+#-----------------------------------------------------------------------------------------------------------------------
+#
+# input Status
+#   - total input off
+#   - total input uit
+#
+# output Status
+#   - total output off
+#   - total output uit
+#
+# status connection
+#   - total cloud OK
+#   - total cloud NOK
+#   - average Rssi
+#
+# status fault
+#   - total Update OK
+#   - total Update NOK
+#
+#-----------------------------------------------------------------------------------------------------------------------
+- sensor:
+#---------- input status -----------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # total input on 
+  ######################################################################################################################
+  - name: "Shelly 1 - total input on"
+    unique_id: "Shelly 1 - total input on"
+    unit_of_measurement: ""
+    icon: mdi:toggle-switch
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - input' -%}
+      {%- set state = 'on' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count -%}
+      {{total | round (0) }}
+  ######################################################################################################################
+  # total input off
+  ######################################################################################################################
+  - name: "Shelly 1 - total input off"
+    unique_id: "Shelly 1 - total input off"
+    unit_of_measurement: ""
+    icon: mdi:toggle-switch-off-outline
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - input' -%}
+      {%- set state = 'off' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
+#---------- output status ----------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # total output off
+  ######################################################################################################################
+  - name: "Shelly 1 - total output on"
+    unique_id: 3626e88c-7e7c-461c-9a7c-3991751055e6
+    unit_of_measurement: ""
+    icon: mdi:power-plug-outline
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - output' -%}
+      {%- set state = 'on' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count -%}
+      {{total | round (0) }}
+  ######################################################################################################################
+  # total output on
+  ######################################################################################################################
+  - name: "Shelly 1 - total output off"
+    unique_id: "Shelly 1 - total output off"
+    unit_of_measurement: ""
+    icon: mdi:power-plug-off-outline
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - output' -%}
+      {%- set state = 'off' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count -%}
+      {{total | round (0) }}
+#---------- status connection ------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # total cloud OK
+  ######################################################################################################################
+  - name: "Shelly 1 - total cloud OK"
+    unique_id: "Shelly 1 - total cloud OK"
+    unit_of_measurement: ""
+    icon: mdi:cloud-check-variant
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - cloud' -%}
+      {%- set state = 'on' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
+  ######################################################################################################################
+  # total cloud NOK
+  ######################################################################################################################
+  - name: "Shelly 1 - total cloud NOK"
+    unique_id: "Shelly 1 - total cloud NOK"
+    unit_of_measurement: ""
+    icon: mdi:cloud-off
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - cloud' -%}
+      {%- set state = 'off' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
+  ######################################################################################################################
+  # average Rssi
+  ######################################################################################################################
+  - name: "Shelly 1 - average Rssi"
+    unique_id: "Shelly 1 - average Rssi"
+    unit_of_measurement: ""
+    icon: mdi:wifi
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - rssi' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- set sensors_count = label_entities(label) | select('is_device_attr', 'model', device) | list | count -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{(total.value / sensors_count) | round(2)}}
+
+#---------- status fault -----------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # total update OK
+  ######################################################################################################################
+  - name: "Shelly 1 - total update OK"
+    unique_id: "Shelly 1 - total update OK"
+    unit_of_measurement: ""
+    icon: mdi:update
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - firmware' -%}
+      {%- set state = 'off' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total}}
+  ######################################################################################################################
+  # total update NOK
+  ######################################################################################################################
+  - name: "Shelly 1 - total update NOK"
+    unique_id: "Shelly 1 - total update NOK"
+    unit_of_measurement: ""
+    icon: mdi:update
+    state: >
+      {%- set device = 'Shelly 1' -%}
+      {%- set label = 'Shelly - firmware' -%}
+      {%- set state = 'on' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total}}

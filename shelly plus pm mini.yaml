@@ -1,0 +1,209 @@
+#-----------------------------------------------------------------------------------------------------------------------
+#     Shelly Plus PM Mini
+#-----------------------------------------------------------------------------------------------------------------------
+#
+# power
+#   - total power
+#   - total energy
+#   - total current
+#   - average voltage
+#   - average frequency
+#   - average device temperature
+#
+# status connection
+#   - total cloud ok
+#   - total cloud nok
+#
+# status fault
+#   - total update ok
+#   - total update nok
+#-----------------------------------------------------------------------------------------------------------------------
+- sensor:
+  ######################################################################################################################
+  # total output off
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total output off"
+    unique_id: "Shelly Plus PM Mini - total output off"
+    unit_of_measurement: ""
+    icon: mdi:power-plug-off-outline
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - output' -%}
+      {%- set state = 'off' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device)| list | count -%}
+      {{total | round (0) }}
+
+#---------- power-------------------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # total power
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total power"
+    unique_id: "Shelly Plus PM Mini - total power"
+    icon: mdi:lightning-bolt
+    unit_of_measurement: "W"
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - power' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{total.value | round(2)}}
+  ######################################################################################################################
+  # total energy
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total energy"
+    unique_id: "Shelly Plus PM Mini - total energy"
+    icon: mdi:lightning-bolt
+    unit_of_measurement: "kWh"
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - energy' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{total.value | round(2)}}
+  ######################################################################################################################
+  # total current
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total current"
+    unique_id: "Shelly Plus PM Mini - total current"
+    icon: mdi:current-ac
+    unit_of_measurement: "A"
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - current' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{total.value | round(2)}}
+  ######################################################################################################################
+  # average voltage
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - average voltage"
+    unique_id: "Shelly Plus PM Mini - average voltage"
+    icon: mdi:alpha-v-circle
+    unit_of_measurement: "V"
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - Voltage' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- set sensors_count = label_entities(label) | select('is_device_attr', 'model', device) | list | count -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{(total.value / sensors_count) | round(2)}}
+  ######################################################################################################################
+  # average frequency
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - average frequency"
+    unique_id: "Shelly Plus PM Mini - average frequency"
+    icon: mdi:sine-wave
+    unit_of_measurement: "Hz"
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - Frequency' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- set sensors_count = label_entities(label) | select('is_device_attr', 'model', device) | list | count -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{(total.value / sensors_count) | round(2)}}
+  ######################################################################################################################
+  # average device temperature
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - average device temperature"
+    unique_id: "Shelly Plus PM Mini - average device temperature"
+    icon: mdi:thermometer
+    unit_of_measurement: "°C"
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - device temperature' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- set sensors_count = label_entities(label) | select('is_device_attr', 'model', device) | list | count -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{(total.value / sensors_count) | round(2)}}
+
+#---------- status cloud connection ------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # total cloud ok
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total cloud ok"
+    unique_id: "Shelly Plus PM Mini - total cloud ok"
+    unit_of_measurement: ""
+    icon: mdi:cloud-check-variant
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - cloud' -%}
+      {%- set state = 'on' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
+  ######################################################################################################################
+  # total cloud nok
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total cloud nok"
+    unique_id: "Shelly Plus PM Mini - total cloud nok"
+    unit_of_measurement: ""
+    icon: mdi:cloud-off
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - cloud' -%}
+      {%- set state = 'off' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
+  ######################################################################################################################
+  # Gemmiddelde Rssi
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - average Rssi"
+    unique_id: "Shelly Plus PM Mini - average Rssi"
+    unit_of_measurement: ""
+    icon: mdi:wifi
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - rssi' -%}
+      {%- set total = namespace(value=0) -%}
+      {%- set sensors = label_entities(label) | select('is_device_attr', 'model', device) | list -%}
+      {%- set sensors_count = label_entities(label) | select('is_device_attr', 'model', device) | list | count -%}
+      {%- for sensor in sensors -%}
+        {%- set total.value = total.value + (states(sensor) | float(0) | round(2)) -%}
+      {%- endfor -%}
+      {{(total.value / sensors_count) | round(2)}}
+
+#---------- status Fault -----------------------------------------------------------------------------------------------
+  ######################################################################################################################
+  # total update ok
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total update ok"
+    unique_id: "Shelly Plus PM Mini - total update ok"
+    unit_of_measurement: ""
+    icon: mdi:update
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - Firmware' -%}
+      {%- set state = 'off' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
+  ######################################################################################################################
+  # total update nok
+  ######################################################################################################################
+  - name: "Shelly Plus PM Mini - total update nok"
+    unique_id: "Shelly Plus PM Mini - total update nok"
+    unit_of_measurement: ""
+    icon: mdi:update
+    state: >
+      {%- set device = 'Shelly Plus PM Mini' -%}
+      {%- set label = 'Shelly - Firmware' -%}
+      {%- set state = 'on' -%}
+      {%- set total = label_entities(label) | select('is_state', state) | select('is_device_attr', 'model', device) | list | count -%}
+      {{total | round (0) }}
+
